@@ -1,0 +1,136 @@
+html{
+    height: 100%;
+}
+
+body {
+    background: linear-gradient(rgba(255, 187, 0, 0.35), rgba(255, 187, 0, 0.35)),url(bg.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    height: 100%;
+    display: flex;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    flex-direction: column;
+
+    font-family: 'Quicksand', sans-serif;
+}
+
+body.red {
+    background: linear-gradient(rgba(255, 0, 0, 0.45), rgba(255, 0, 0, 0.45)), url(bg.jpg) no-repeat center center fixed;
+}
+
+body.blue {
+    background: linear-gradient(rgba(0, 0, 255, 0.45), rgba(0, 0, 255, 0.45)), url(bg.jpg) no-repeat center center fixed;
+}
+
+#grille {
+    display: flex;
+    max-width: 100%;
+    height: 100%;
+    flex-wrap: wrap;
+}
+
+.case {
+    display: flex;
+    flex: 1;
+    box-sizing: border-box;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    min-width: calc(20% - 14px);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border: 2px solid #ffffff;
+    background-color: rgb(230, 228, 222);
+    margin: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: 'Quicksand', sans-serif;
+    text-transform: lowercase;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.revele {
+    cursor: default;
+}
+
+.revele.rouge{
+    background-color: #e97163;
+}
+
+.revele.bleu{
+    background-color: #3498db;
+}
+
+.revele.dead{
+    background-color: #111111;
+    color: #ffffff;
+}
+
+.raye {
+    text-decoration: line-through;
+    font : oblique;
+    filter: brightness(0.8);
+    color: #444444;
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type="text"] {
+    flex: 1;
+    min-width: 0px;
+    padding: 8px 8px;
+    font-family: 'Quicksand', sans-serif;
+    margin: 5px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    background-color: #ddd;
+    font-weight: bold;
+    border: 2px solid #ffff;
+    box-sizing: border-box;
+}
+
+
+button {
+    padding: 8px 8px;
+    font-family: 'Quicksand', sans-serif;
+    margin: 5px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    background-color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid #ffff;
+    min-width: calc(20% - 10px);
+    box-sizing: border-box;
+}
+
+@media all and (min-width: 600px) {
+    .case {
+        font-size: 14px;
+    }
+}
+
+@media all and (min-width: 800px) {
+    .case, input[type="text"], button {
+        font-size: 15px;
+        min-width: calc(20% - 20px);
+        margin: 10px;
+    }
+}
+
+@media all and (min-width: 1000px) {
+    .case, input[type="text"], button {
+        font-size: 20px;
+        min-width: calc(20% - 30px);
+        margin: 15px;
+    }
+}

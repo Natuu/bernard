@@ -1,0 +1,14 @@
+{
+    "name": "codename",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.16.4",
+        "ws": "*",
+        "request": "*"
+    }
+}

@@ -5,22 +5,23 @@ ArrayList<Word> words;
 WebsocketClient cl;
 
 void setup() {
-  size(1000, 1000);
+  size(2000, 1000);
   frameRate(60);
   
-  //cl = new WebsocketClient(this, "ws://192.168.43.218:1337");
+  cl = new WebsocketClient(this, "ws://192.168.43.218:1337");
   //cl = new WebsocketClient(this, "ws://127.0.0.1:1337");
   words = new ArrayList<Word>();
   
-  flood_words();
+  //flood_words();
+  cl.sendMessage("{\"type\":\"display\"}");
 }
 
 void draw() {
   background(0); 
-  textSize(32);
   fill(255);
  
-  if ((int)random(15) == 5) flood_words();
+  //if ((int)random(15) == 5) flood_words();
+  
   for (Word w : words) {
     w.update(); 
   }

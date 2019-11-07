@@ -55,7 +55,7 @@ class Word {
     
     // Size change
     if ((int)size > NORMAL_SIZE ) {
-      size = size - ((SPAWN_SIZE - NORMAL_SIZE)/(float)1000);
+      size = size - ((SPAWN_SIZE - NORMAL_SIZE)/(float)(DECREASE_TIME*60));
     }
     
     // DRAW

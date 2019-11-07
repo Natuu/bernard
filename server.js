@@ -16,8 +16,19 @@ var wsServer = new WebSocket.Server({
 	server: server
 });
 
+let link = "getWord('server_assets/mots.txt')";
+
+router.get('/qrcode',function(req,res){
+	res.sendFile(path.join(__dirname+'/views/qrcode.html'));
+});
+
 router.get('/',function(req,res){
-	res.sendFile(path.join(__dirname+'/frontend.html'));
+	res.sendFile(path.join(__dirname+'/views/error.html'));
+});
+
+
+router.get('/' + link,function(req,res){
+	res.sendFile(path.join(__dirname+'/views/index.html'));
 });
 
 app.use('/public', express.static('public'));
@@ -31,13 +42,17 @@ server.listen(process.env.PORT || 1337, () => {
 	console.log(`Server started on port ${server.address().port} :)`);
 });
 
-/**
-* Global variables
-*/
-// list of currently connected clients (users)
-var clients = [ ];
 
-var rooms = {};
+
+// On genere un nouveau lien toutes les 60000 ms
+let qrClients = [];
+setInterval(() => {
+	link = getWord('server_assets/mots.txt');
+	qrClients.forEach(client => {
+		client.send(JSON.stringify({"type" : "qr", "link": link}));
+	});
+}, 60000);
+
 
 
 // This callback function is called every time someone
@@ -48,9 +63,6 @@ wsServer.on('connection', function(connection) {
 	
 	// we need to know client index to remove them on 'close' event
 	var index = clients.push(connection) - 1;
-	var espion = false;
-	var room = "";
-	var equipe = 0;
 
 	setInterval(() => {connection.ping()}, 10000);
 	
@@ -65,9 +77,7 @@ wsServer.on('connection', function(connection) {
 		}
 		
 		
-		if (json.type === 'start') {
-			room = json.room;
-			espion = json.espion;
+		if (json.type === 'qr') {
 			
 			if (rooms[room] === undefined) {
 				rooms[room] = {"clients": [], "espions": [], "mots": [], "rouges": [], "dead" : [], "bleus": [], "blancs" : [], "done": []};
@@ -186,4 +196,12 @@ function shuffleArray(array) {
         array[i] = array[j];
         array[j] = temp;
     }
+}
+
+function getWord(file) {
+	fs.readFile(file, function(err, data){
+		if(err) throw err;
+		var lines = data.split('\n');
+		return lines[Math.floor(Math.random()*lines.length)];
+	});
 }

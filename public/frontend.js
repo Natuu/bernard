@@ -2,17 +2,6 @@ $(function () {
 	"use strict";
 	
 	// for better performance - to avoid searching in DOM
-	var grille = $('#grille');
-	var form = $('#form');
-	var monEquipe = "none";
-	var espion = false;
-	var debutPartie = false;
-	
-	for (let i = 0; i < 5; i++) {
-		for (let j = 0; j < 5; j++) {
-			grille.append('<span class="case" id="case_' + i + '_' + j + '"></span>');
-		}
-	}
 	
 	// if user is running mozilla then use it's built-in WebSocket
 	window.WebSocket = window.WebSocket || window.MozWebSocket;

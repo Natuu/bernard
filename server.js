@@ -4,7 +4,7 @@ const path = require('path');
 const router = express.Router();
 const WebSocket = require('ws');
 const http = require('http');
-const request = require('request');
+const fs = require('fs');
 
 // Optional. You will see this name in eg. 'ps' or 'top' command
 process.title = 'node-server';
@@ -16,30 +16,26 @@ var wsServer = new WebSocket.Server({
 	server: server
 });
 
-let link = "getWord('server_assets/mots.txt')";
+let link = "test";
 
-router.get('/qrcode',function(req,res){
-	res.sendFile(path.join(__dirname+'/views/qrcode.html'));
+router.get('/:link', function(req,res){
+	if (req.params.link === link) {
+		res.sendFile(path.join(__dirname+'/views/index.html'));
+	} else if (req.params.link === "qrcode") {
+		res.sendFile(path.join(__dirname+'/views/qrcode.html'));
+	} else {
+		res.sendFile(path.join(__dirname+'/views/error.html'));
+	}	
 });
 
-router.get('/',function(req,res){
-	res.sendFile(path.join(__dirname+'/views/error.html'));
-});
-
-
-router.get('/' + link,function(req,res){
-	res.sendFile(path.join(__dirname+'/views/index.html'));
-});
-
-app.use('/public', express.static('public'));
-
+app.use('/:link/public', express.static('public'));
 
 //add the router
 app.use('/', router);
 
 //start our server
 server.listen(process.env.PORT || 1337, () => {
-	console.log(`Server started on port ${server.address().port} :)`);
+	console.log(`Server started on port ${server.address().port}`);
 });
 
 
@@ -47,13 +43,21 @@ server.listen(process.env.PORT || 1337, () => {
 // On genere un nouveau lien toutes les 60000 ms
 let qrClients = [];
 setInterval(() => {
-	link = getWord('server_assets/mots.txt');
-	qrClients.forEach(client => {
-		client.send(JSON.stringify({"type" : "qr", "link": link}));
+	fs.readFile('server_assets/mots.txt', 'utf8', function(err, data){
+		if(err) throw err;
+		var lines = data.split('\n');
+		link = lines[Math.floor(Math.random()*lines.length)];
 	});
-}, 60000);
+	qrClients.forEach(client => {
+		if (client !== undefined) {
+			client.send(JSON.stringify({"type" : "qr", "link": link}));
+		}
+	});
+}, 600000);
 
 
+let clients = [];
+let affichage;
 
 // This callback function is called every time someone
 // tries to connect to the WebSocket server
@@ -63,6 +67,7 @@ wsServer.on('connection', function(connection) {
 	
 	// we need to know client index to remove them on 'close' event
 	var index = clients.push(connection) - 1;
+	var indexQR = -1;
 
 	setInterval(() => {connection.ping()}, 10000);
 	
@@ -76,114 +81,38 @@ wsServer.on('connection', function(connection) {
 			return;
 		}
 		
-		
 		if (json.type === 'qr') {
-			
-			if (rooms[room] === undefined) {
-				rooms[room] = {"clients": [], "espions": [], "mots": [], "rouges": [], "dead" : [], "bleus": [], "blancs" : [], "done": []};
-			}
-
-			rooms[room].clients.push(connection);
-			if(espion && rooms[room].espions.indexOf("rouge") < 0) {
-				equipe = rooms[room].espions.push("rouge");
-				connection.send(JSON.stringify({"type" : "equipe", "equipe": "rouge"}));
-			}
-			else if(espion && rooms[room].espions.indexOf("bleu") < 0) {
-				equipe = rooms[room].espions.push("bleu");
-				connection.send(JSON.stringify({"type" : "equipe", "equipe": "bleu"}));
-			} 
-			else {
-				connection.send(JSON.stringify({"type" : "notEspion"}));
-				espion = false;
-			}
-			
-			for (const indexMot in rooms[room].mots) {
-				if (rooms[room].mots.hasOwnProperty(indexMot)) {
-					let res = {"type" : "mot", "mot": rooms[room].mots[indexMot]}; 
-					
-					res.casei = parseInt(indexMot / 5);
-					res.casej = (indexMot) % 5;
-					
-					connection.send(JSON.stringify(res));
-				}
-			}
-
-			if (rooms[room].mots.hasOwnProperty(24)) {
-				connection.send(JSON.stringify({"type" : "debutPartie", "room": rooms[room]}));
-				for (var i=0; i < rooms[room].done.length; i++) {						
-					rooms[room].clients[i].send(JSON.stringify({"type" : "click", "casei": parseInt(rooms[room].done[i] / 5), "casej" : rooms[room].done[i] % 5}));
-				}
+			connection.send(JSON.stringify({"type" : "qr", "link": link}));
+			if (qrClients.indexOf(connection) === -1) {
+				indexQR = qrClients.push(connection) - 1;
 			}
 		}
-		else if (rooms[room] !== undefined && rooms[room].clients !== undefined && rooms[room].espions !== undefined && rooms[room].mots !== undefined && rooms[room].rouges !== undefined && rooms[room].dead !== undefined && rooms[room].blancs !== undefined && rooms[room].bleus !== undefined && rooms[room].done !== undefined)  {
-			if (json.type === 'mot') {
 
-				if  (rooms[room].mots.length < 25) {
-					// On verifie que le mot n'est pas déjà présent
-					if (rooms[room].mots.indexOf(json.mot) < 0) {
-						let iCase = rooms[room].mots.push(json.mot) - 1;
-						
-						json.casei = parseInt(iCase / 5);
-						json.casej = (iCase) % 5;
-						
-						for (var i=0; i < clients.length; i++) {
-							clients[i].send(JSON.stringify(json));
-						}
-					}
+		if (json.type === 'display') {
+			affichage = connection;
+			console.log('display');
+		}
 
-					if(rooms[room].mots.length === 25) {
-						let aRepartir = [];
-						for (let i = 0; i < 25; i++) {
-							aRepartir.push(i);
-						}
-						shuffleArray(aRepartir);
-						rooms[room].rouges = aRepartir.slice(0, 9);
-						rooms[room].bleus = aRepartir.slice(9, 17);
-						rooms[room].dead = aRepartir.slice(17, 18);
-						rooms[room].blancs = aRepartir.slice(18, 25);
-						rooms[room].done = [];
-
-						for (var i=0; i < rooms[room].clients.length; i++) {						
-							rooms[room].clients[i].send(JSON.stringify({"type" : "debutPartie", "room": rooms[room]}));
-						}
-					}
-				}
-				else {					
-					connection.send(JSON.stringify({"type" : "debutPartie", "room": rooms[room]}));
-				}
-			}
-			else if (json.type === 'click') {
-				rooms[room].done.push(parseInt(json.click));
-
-				for (var i=0; i < rooms[room].clients.length; i++) {						
-					rooms[room].clients[i].send(JSON.stringify({"type" : "click", "casei": parseInt(json.click / 5), "casej" : json.click % 5}));
-				}
-
-				if (rooms[room].bleus.every((val) => rooms[room].done.includes(val))  || rooms[room].rouges.every((val) => rooms[room].done.includes(val)) || rooms[room].done.includes(rooms[room].dead[0])) {
-					for (var i=0; i < rooms[room].clients.length; i++) {						
-						rooms[room].clients[i].send(JSON.stringify({"type" : "finPartie"}));
-						rooms[room].mots = [];
-						rooms[room].done = [];
-					}
-				}
+		if (json.type === 'mot') {
+			console.log(json.location);
+			if (json.location.replace('/', '') === link) {
+				affichage.send(json.mot + "_" + Math.floor(Math.random()*2000) + "_" + Math.floor(Math.random()*1000))
+			} else {
+				
 			}
 		}
+		
 	});
 	
 	// user disconnected
-	connection.on('close', function(connection) {
+	connection.on('close', function() {
 		console.log((new Date()) + " Peer disconnected.");
 		// remove user from the list of connected clients
-		if (espion) {
-			rooms[room].espions[equipe - 1] = "";
+		if (indexQR !== -1) {
+			qrClients.splice(indexQR, 1);
 		}
-		rooms[room].clients.splice(rooms[room].clients.indexOf(connection), 1);
-		clients.splice(clients.indexOf(connection), 1);
-
-		if (rooms[room].clients.length === 0) {
-			rooms[room].mots = [];
-			rooms[room].done = [];
-			rooms[room].espions = [];
+		if (index !== -1) {
+			clients.splice(index, 1);
 		}
 	});
 	
@@ -196,12 +125,4 @@ function shuffleArray(array) {
         array[i] = array[j];
         array[j] = temp;
     }
-}
-
-function getWord(file) {
-	fs.readFile(file, function(err, data){
-		if(err) throw err;
-		var lines = data.split('\n');
-		return lines[Math.floor(Math.random()*lines.length)];
-	});
 }

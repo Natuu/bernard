@@ -9,6 +9,6 @@
     "dependencies": {
         "express": "^4.16.4",
         "ws": "*",
-        "request": "*"
+        "fs": "*"
     }
 }

@@ -16,7 +16,7 @@ $(function () {
 	}
 	
 	// open connection
-	var connection = new WebSocket('ws://' + "localhost" + ":1337");
+	var connection = new WebSocket('ws://' + window.location.hostname + ":1337");
 	
 	connection.onopen = function () {
 		connection.send(JSON.stringify({"type": "location", "location": window.location.pathname}));
@@ -46,27 +46,18 @@ $(function () {
 		}
 	};
 	
-	form.submit(function (e) {
+	$('form').submit(function (e) {
 		e.preventDefault();
 		let mot = {};
 		mot.type = "mot";
 		mot.mot = $('#mot').val();
 		mot.location = window.location.pathname;
 		$('#mot').val('');
-		if (mot.mot.match(/^[a-zA-Zàéèëêôö\- ]+$/g)) {
+		if (mot.mot.match(/^[a-zA-Zàéèëêôö\- ']+$/g)) {
 			mot.mot = mot.mot.toLowerCase();
 			connection.send(JSON.stringify(mot));
 		} else {
 			alert('Erreur dans la saisie de lettres et d\'espaces');
 		}
-	});
-
-
-	$('.random').on('click', function() {
-		$.get("public/mots.txt", function(wholeTextFile) {
-			let lines = wholeTextFile.split(/\n/),
-			  randomIndex = Math.floor(Math.random() * lines.length);
-			$('#mot').val(lines[randomIndex]);
-		  })
 	});
 });

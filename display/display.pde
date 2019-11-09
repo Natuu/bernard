@@ -8,7 +8,7 @@ void setup() {
   size(2000, 1000);
   frameRate(60);
   
-  cl = new WebsocketClient(this, "ws://192.168.43.218:1337");
+  cl = new WebsocketClient(this, "ws://127.0.0.1:1337");
   //cl = new WebsocketClient(this, "ws://127.0.0.1:1337");
   words = new ArrayList<Word>();
   

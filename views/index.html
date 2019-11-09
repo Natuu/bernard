@@ -3,22 +3,33 @@
     <head>
         <meta charset="utf-8">
         <title>Bernard</title>
-        <link rel="stylesheet" href="public/main.css">
+        <link rel="stylesheet" href="main.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="apple-touch-icon" type="image/png" href="public/icon.png">
-        <link rel="icon" type="image/png" href="public/icon.png">
+        <link rel="apple-touch-icon" type="image/png" href="icon.png">
+        <link rel="icon" type="image/png" href="icon.png">
         <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous"/>
         <meta name="format-detection" content="telephone=no">
         <meta name="apple-touch-fullscreen" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
     </head>
     <body>
-        <form id="form">
-            <input type="text" id="mot" placeholder="Entrez un mot">
-            <button type="submit">Ajouter</button>
-        </form>
+        <article class="header">
+            <h1>Bernard</h1>
+        </article>
+        <article class="inputDiv">
+            <p>Question random de la mort qui tue ?</p>
+            <form id="form" autocomplete="off">
+                <input type="search" name="mot" id="mot" placeholder="Réponse..." required>
+				<button type="submit" name="validate" id="validate">
+                    <i class="far fa-paper-plane"></i>
+				</button>
+            </form>
+        </article>
+        
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="public/frontend.js"></script>
+        <script src="frontend.js"></script>
     </body>
 </html>

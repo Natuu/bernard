@@ -19,36 +19,99 @@ body {
     font-family: 'Quicksand', sans-serif;
 }
 
+h1 {
+    text-align: center;
+    margin: 0;
+    font-family: 'Abril Fatface', 'Times New Roman', Times, serif;
+    font-size: 40px;
+}
+
+article {
+    max-width: 500px;
+    align-self: center;
+    width: 100%;
+    display: flex;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 1px 5px rgba(56, 54, 54, 0.7);
+    border-radius: 3px;
+    flex-direction: column;
+    margin: 15px;
+    box-sizing: border-box;
+}
+
+article p {
+    text-align: center;
+    font-size: 23px;
+    margin: 0 0 15px 0;
+}
+
 form {
     display: flex;
     justify-content: space-between;
+    max-width: 500px;
+    align-self: center;
+    width: 100%;
+    flex-direction: row;
 }
 
-input[type="text"] {
-    flex: 1;
-    min-width: 0px;
-    padding: 8px 8px;
-    font-family: 'Quicksand', sans-serif;
-    margin: 5px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    background-color: #ddd;
-    font-weight: bold;
-    border: 2px solid #ffff;
-    box-sizing: border-box;
+input {
+    display: flex;
+	flex: 1;
+	margin: 0;
+	padding: 5px 15px;
+	background-color: #fff;
+	border-top: solid #cbcbcb 1px;
+	border-bottom: solid #cbcbcb 1px;
+	border-left: solid #cbcbcb 1px;
+	border-right: none;
+	border-radius: 4px 0 0 4px;
+	box-shadow: 0 1px 0 0 #bcbcbc;
+	font-family: 'Quicksand', sans-serif;
+	font-size: 16px;
 }
 
 
 button {
-    padding: 8px 8px;
-    font-family: 'Quicksand', sans-serif;
-    margin: 5px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    background-color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    border: 2px solid #ffff;
-    min-width: calc(20% - 10px);
-    box-sizing: border-box;
+	display: flex;
+	margin: 0;
+	padding: 10px 5px;
+	justify-content: center;
+	background-color: rgb(4, 158, 81);
+	border: solid #008141 1px;
+	border-radius: 0 4px 4px 0;
+	box-shadow: 0 1px 0 0 rgb(0, 97, 44);
+	font-size: 16px;
+	color: #fff;
+	cursor: pointer;
+	width: 40px;
+}
+
+button i {
+	text-align: center;
+	margin: 0 10px 0 0;
+}
+
+button i {
+	display: flex;
+	align-self: center;
+	text-align: center;
+	margin: 0;
+}
+
+button:hover {
+	background-color: #008150;
+}
+
+input:focus, button:focus {
+	outline: none;
+}
+
+.code {
+    display: flex;
+    justify-content: center;
+}
+
+.code canvas {
+    margin: 15px;
 }

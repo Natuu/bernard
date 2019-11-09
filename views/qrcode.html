@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <title>Bernard - QR Code</title>
-        <link rel="stylesheet" href="public/main.css">
+        <link rel="stylesheet" href="main.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="apple-touch-icon" type="image/png" href="public/icon.png">
-        <link rel="icon" type="image/png" href="public/icon.png">
+        <link rel="apple-touch-icon" type="image/png" href="icon.png">
+        <link rel="icon" type="image/png" href="icon.png">
         <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
         <meta name="format-detection" content="telephone=no">
         <meta name="apple-touch-fullscreen" content="yes">
@@ -14,8 +14,15 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
     </head>
     <body>
-        <p></p>
-        <div class="code"></div>
+        <article class="header">
+            <h1>Bernard</h1>
+        </article>
+
+        <article>
+            <p></p>
+            <div class="code"></div>
+        </article>
+       
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
         <script>
@@ -59,7 +66,7 @@
 		// On met la couleur de l'equipe en fond
 		if (json.type === 'qr') {
             $('p').html("");
-            $('p').text("http://localhost/" + json.link);
+            $('p').html("<a href='http://localhost:1337/" + json.link + "'>http://localhost:1337/" + json.link + "</a>");
             $('.code').html('');
             $('.code').qrcode({
                 // render method: 'canvas', 'image' or 'div'

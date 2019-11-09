@@ -19,7 +19,7 @@ var wsServer = new WebSocket.Server({
 let link = "test";
 
 router.get('/:link', function(req,res){
-	if (req.params.link === link) {
+	if (req.params.link.trim() === link.trim()) {
 		res.sendFile(path.join(__dirname+'/views/index.html'));
 	} else if (req.params.link === "qrcode") {
 		res.sendFile(path.join(__dirname+'/views/qrcode.html'));
@@ -28,7 +28,7 @@ router.get('/:link', function(req,res){
 	}	
 });
 
-app.use('/:link/public', express.static('public'));
+app.use(express.static('public'));
 
 //add the router
 app.use('/', router);
@@ -40,19 +40,11 @@ server.listen(process.env.PORT || 1337, () => {
 
 
 
-// On genere un nouveau lien toutes les 60000 ms
+// On genere un nouveau lien toutes les 10 minutes
 let qrClients = [];
+changelink();
 setInterval(() => {
-	fs.readFile('server_assets/mots.txt', 'utf8', function(err, data){
-		if(err) throw err;
-		var lines = data.split('\n');
-		link = lines[Math.floor(Math.random()*lines.length)];
-	});
-	qrClients.forEach(client => {
-		if (client !== undefined) {
-			client.send(JSON.stringify({"type" : "qr", "link": link}));
-		}
-	});
+	changelink();
 }, 600000);
 
 
@@ -90,15 +82,20 @@ wsServer.on('connection', function(connection) {
 
 		if (json.type === 'display') {
 			affichage = connection;
-			console.log('display');
+			console.log('Display connected, ready to receive words');
 		}
 
 		if (json.type === 'mot') {
-			console.log(json.location);
 			if (json.location.replace('/', '') === link) {
-				affichage.send(json.mot + "_" + Math.floor(Math.random()*2000) + "_" + Math.floor(Math.random()*1000))
+				if (affichage !== undefined) {
+					if(json.mot !== undefined) {
+						json.mot.split(" ").forEach(mot => {
+							affichage.send(mot + "_" + Math.floor(Math.random()*2000) + "_" + Math.floor(Math.random()*1000));		
+						});
+					}
+				}
 			} else {
-				
+				connection.send(JSON.stringify({"type" : "newRoom"}));
 			}
 		}
 		
@@ -125,4 +122,20 @@ function shuffleArray(array) {
         array[i] = array[j];
         array[j] = temp;
     }
+}
+
+function changelink() {
+	fs.readFile('server_assets/mots.txt', 'utf8', function(err, data){
+		if(err) throw err;
+		var lines = data.split('\n');
+		link = "" + Math.floor(Math.random()*100) + lines[Math.floor(Math.random()*lines.length)].trim() + Math.floor(Math.random()*100);
+		qrClients.forEach(client => {
+			if (client !== undefined) {
+				client.send(JSON.stringify({"type" : "qr", "link": link}));
+			}
+		});
+		clients.forEach(client => {
+			client.send(JSON.stringify({"type" : "newRoom"}));
+		});
+	});
 }

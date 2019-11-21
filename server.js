@@ -28,13 +28,17 @@ router.get('/:link', function(req,res){
 	}	
 });
 
+router.get('/', function(req,res){
+	res.sendFile(path.join(__dirname+'/views/error.html'));	
+});
+
 app.use(express.static('public'));
 
 //add the router
 app.use('/', router);
 
 //start our server
-server.listen(process.env.PORT || 1337, () => {
+server.listen(process.env.PORT || 8080, () => {
 	console.log(`Server started on port ${server.address().port}`);
 });
 

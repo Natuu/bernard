@@ -9,7 +9,6 @@ class Word {
   float size;
   int counter = 0;
   int targetx, targety;
-  float offsetx, offsety;
   float posx, posy;
   String word;
   boolean donex, doney;
@@ -25,9 +24,14 @@ class Word {
     targety = y;
     posx = width/2;
     posy = height/2;
-    offsetx = (targetx - posx) / TIME;
-    offsety = (targety - posy) / TIME;
     size = SPAWN_SIZE;
+  }
+ 
+  void setTarget(int targetx, int targety) {
+     this.targetx = targetx;
+     this.targety = targety;
+     this.donex = false;
+     this.doney = false;
   }
  
   void update() {
@@ -39,11 +43,9 @@ class Word {
     // Transition movement
     if (!donex) {
       posx += (targetx - posx)/10;
-      //posx += offsetx;
     }
     if (!doney) {
       posy += (targety - posy)/10;
-      //posy += offsety; 
     }
     
 

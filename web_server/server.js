@@ -16,6 +16,8 @@ var wsServer = new WebSocket.Server({
 	server: server
 });
 
+const word2vecConnection = new WebSocket('ws://127.0.0.1:1337/');
+
 let link = "test";
 
 router.get('/:link', function(req,res){
@@ -84,19 +86,16 @@ wsServer.on('connection', function(connection) {
 			}
 		}
 
-		if (json.type === 'display') {
-			affichage = connection;
-			console.log('Display connected, ready to receive words');
-		}
+
 
 		if (json.type === 'mot') {
 			if (json.location.replace('/', '') === link) {
-				if (affichage !== undefined) {
-					if(json.mot !== undefined) {
-						json.mot.split(" ").forEach(mot => {
-							affichage.send(mot + "_" + Math.floor(Math.random()*2000) + "_" + Math.floor(Math.random()*1000));		
-						});
-					}
+				if(json.mot !== undefined) {
+					json.mot.split(" ").forEach(mot => {
+						if (word2vecConnection !== undefined) {
+							word2vecConnection.send(mot + "_" + Math.floor(Math.random()*2000) + "_" + Math.floor(Math.random()*1000));		
+						}
+					});
 				}
 			} else {
 				connection.send(JSON.stringify({"type" : "newRoom"}));

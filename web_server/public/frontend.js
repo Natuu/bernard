@@ -53,11 +53,11 @@ $(function () {
 		mot.mot = $('#mot').val();
 		mot.location = window.location.pathname;
 		$('#mot').val('');
-		if (mot.mot.match(/^[a-zA-Zàéèëêôö\- ']+$/g)) {
+		if (mot.mot.match(/^[a-zA-Zçàéèëêôöûïüîâ\-\s']+$/g)) {
 			mot.mot = mot.mot.toLowerCase();
 			connection.send(JSON.stringify(mot));
 		} else {
-			alert('Erreur dans la saisie de lettres et d\'espaces');
+			alert('Caractère non reconnu');
 		}
 	});
 });

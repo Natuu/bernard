@@ -92,8 +92,9 @@ wsServer.on('connection', function(connection) {
 			if (json.location.replace('/', '') === link) {
 				if(json.mot !== undefined) {
 					json.mot.split(" ").forEach(mot => {
+						console.log(mot);
 						if (word2vecConnection !== undefined) {
-							word2vecConnection.send(mot + "_" + Math.floor(Math.random()*2000) + "_" + Math.floor(Math.random()*1000));		
+							word2vecConnection.send(mot);		
 						}
 					});
 				}

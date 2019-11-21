@@ -16,7 +16,7 @@ $(function () {
 	}
 	
 	// open connection
-	var connection = new WebSocket('ws://' + window.location.hostname + ":1337");
+	var connection = new WebSocket("ws://" + window.location.hostname + ":" + location.port);
 	
 	connection.onopen = function () {
 		connection.send(JSON.stringify({"type": "location", "location": window.location.pathname}));

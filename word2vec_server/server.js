@@ -66,7 +66,8 @@ w2v.loadModel("./model4.bin", function(error, model) {
 			message = message.trim();
 			
 			if (displayConnected) {
-
+				if (model.getVector(message) === null)
+					return;
 				let index = wordsVec.push(Array.prototype.slice.call(model.getVector(message).values));
 				//console.log(wordsVec);
 				words[index-1] = message; // on place le nouveau mot

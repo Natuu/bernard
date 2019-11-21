@@ -42,7 +42,7 @@
 	}
 	
 	// open connection
-	var connection = new WebSocket('ws://' + window.location.hostname + ":8080");
+	var connection = new WebSocket('ws://' + window.location.hostname + ":" + location.port);
 	
 	connection.onopen = function () {
 		connection.send(JSON.stringify({"type" : "qr"}));

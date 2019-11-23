@@ -9,7 +9,7 @@ int marginx = 50;
 int marginy = 50;
 
 void setup() {
-  size(2000, 1000);
+  size(800, 400);
   frameRate(60);
   
   cl = new WebsocketClient(this, "ws://127.0.0.1:1338");

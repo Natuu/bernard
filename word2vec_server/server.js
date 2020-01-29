@@ -27,7 +27,7 @@ let wordsVec = [];
 let displayConnected = false;
 let displayConnection;
 let firstRun = true;
-
+let components = ["x", "y", "color", "font"]
 w2v.loadModel("./model4.bin", function(error, model) {
 	console.log(error);
 
@@ -43,6 +43,8 @@ w2v.loadModel("./model4.bin", function(error, model) {
 	//start our server
 	display.on('connection', function connection(ws) {
 		console.log(`Display connected`);
+		setInterval(() => {ws.ping()}, 10000);
+
 		displayConnected = true;
 		displayConnection = ws;
 		ws.on('close', function() {
@@ -57,24 +59,33 @@ w2v.loadModel("./model4.bin", function(error, model) {
 	//start our server
 	wordReceiver.on('connection', function connection(ws) {
 		console.log(`Word client connected`);
+		setInterval(() => {ws.ping()}, 10000);
 
 
 		// This callback function is called every time someone
 		// tries to connect to the WebSocket server
 		ws.on('message', function(message) {
-			console.log("received: " + message);
+			//console.log("received: " + message);
 			message = message.trim();
 			
 			if (displayConnected) {
+				if (message === "[[[reset]]]") {
+					displayConnection.send(JSON.stringify({"reset": true}));
+					return;
+				}
 				if (model.getVector(message) === null)
 					return;
+
+				// si le mot existe deja on ignore le message
+				if (words.includes(message)) return;
+
 				let index = wordsVec.push(Array.prototype.slice.call(model.getVector(message).values));
 				//console.log(wordsVec);
 				words[index-1] = message; // on place le nouveau mot
 					
 				
 				let pca = new PCA(wordsVec, {scale: true});
-				let res = pca.predict(wordsVec, {nComponents: 2});
+				let res = pca.predict(wordsVec, {nComponents: components.length});
 
 
 				// scale axis
@@ -93,14 +104,14 @@ w2v.loadModel("./model4.bin", function(error, model) {
 						resScaled[i][j] = (res.get(i, j) - min[j]) / (max[j]-min[j]);
 					}
 				}
-				console.log("### RES");
-				console.log(res);
-				console.log("### MIN");
-				console.log(min);
-				console.log("### MAX");
-				console.log(max);
-				console.log("### RESSCALED");
-				console.log(resScaled);
+				// console.log("### RES");
+				// console.log(res);
+				// console.log("### MIN");
+				// console.log(min);
+				// console.log("### MAX");
+				// console.log(max);
+				// console.log("### RESSCALED");
+				// console.log(resScaled);
 
 				let jsonData = {};
 				let isnew = false;
@@ -108,10 +119,10 @@ w2v.loadModel("./model4.bin", function(error, model) {
 				jsonData.words = new Array(words.length);
 				for (i = 0; i < words.length; i++) {
 					isnew = ((i == index-1) || firstRun);
-					jsonData.words[i] = {"value": words[i],
-										 "x": resScaled[i][0].toFixed(2), 
-										 "y":resScaled[i][1].toFixed(2), 
-										 "new": isnew};
+					jsonData.words[i] = {"value": words[i], "new": isnew};
+					for (j = 0; j < components.length; j++) {
+						jsonData.words[i][components[j]] = resScaled[i][j].toFixed(2);
+					}
 				}
 				if (firstRun) firstRun = false;
 				

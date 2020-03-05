@@ -17,7 +17,7 @@ PFont font_bold;
 void setup() {
   size(1500, 1000);
   colorMode(HSB, 360, 100, 100);
-    
+  
   font_regular = createFont("Quicksand-Regular.ttf", 32);
   font_light = createFont("Quicksand-Light.ttf", 32);
   font_bold = createFont("Quicksand-Bold.ttf", 32);
@@ -25,9 +25,7 @@ void setup() {
 
   frameRate(60);
   
-  print("Host is "+ args[0]);  
-  cl = new WebsocketClient(this, "ws://" + args[0]);
-  print("Connected.");
+  cl = new WebsocketClient(this, "ws://127.0.0.1:1338");
   words = new ConcurrentHashMap<String, Word>();
   
   //flood_words();

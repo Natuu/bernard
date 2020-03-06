@@ -89,18 +89,18 @@ wsServer.on('connection', function(connection) {
 
 
 		if (json.type === 'mot') {
-			if (json.location.replace('/', '') === link) {
+			// if (json.location.replace('/', '') === link) {
 				if(json.mot !== undefined) {
 					json.mot.split(" ").forEach(mot => {
-						console.log(mot);
+						//console.log(mot);
 						if (word2vecConnection !== undefined) {
 							word2vecConnection.send(mot);		
 						}
 					});
 				}
-			} else {
-				connection.send(JSON.stringify({"type" : "newRoom"}));
-			}
+			// } else {
+			// 	connection.send(JSON.stringify({"type" : "newRoom"}));
+			// }
 		}
 		
 	});

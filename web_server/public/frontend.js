@@ -53,7 +53,7 @@ $(function () {
 		mot.mot = $('#mot').val();
 		mot.location = window.location.pathname;
 		$('#mot').val('');
-		if (mot.mot.match(/^[a-zA-Zçàéèëêôöûïüîâ\-\s']+$/g)) {
+		if (mot.mot.match(/^[a-zA-Zçàéèëêôöûïüîâ\-\s']+$/g) || mot.mot === '[[[reset]]]') {
 			mot.mot = mot.mot.toLowerCase();
 			connection.send(JSON.stringify(mot));
 		} else {

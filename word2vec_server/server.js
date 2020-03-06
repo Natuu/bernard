@@ -70,7 +70,16 @@ w2v.loadModel("./model4.bin", function(error, model) {
 			
 			if (displayConnected) {
 				if (message === "[[[reset]]]") {
+					words = [];
+					wordsVec = [];
 					displayConnection.send(JSON.stringify({"reset": true}));
+					mots = ["bienvenue", "dans", "notre", "expérience"];
+					mots.forEach(mot => {
+						let i = wordsVec.push(Array.prototype.slice.call(model.getVector(mot).values));
+						//console.log(wordsVec);
+						words[i-1] = mot;
+						
+					});
 					return;
 				}
 				if (model.getVector(message) === null)

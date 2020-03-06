@@ -1,0 +1,125 @@
+html{
+    height: 100%;
+}
+
+body {
+    background: url(bg.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    height: 100%;
+    display: flex;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    flex-direction: column;
+
+    font-family: 'Quicksand', sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    font-family: 'Quicksand', 'Times New Roman', Times, serif;
+    font-size: 30px;
+}
+
+article {
+    max-width: 500px;
+    align-self: center;
+    width: 100%;
+    display: flex;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 1px 7px rgba(56, 54, 54, 0.7);
+    border-radius: 8px;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px;
+    box-sizing: border-box;
+}
+
+article p {
+    text-align: center;
+    font-size: 18px;
+    margin: 0;
+}
+
+article p.description {
+    text-align: justify;
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+    max-width: 500px;
+    align-self: center;
+    width: 100%;
+    flex-direction: row;
+    margin: 15px 0 0 0;
+}
+
+input {
+    -webkit-appearance: none;
+    display: flex;
+	flex: 1;
+	margin: 0;
+	padding: 5px 15px;
+	background-color: #fff;
+	border-top: solid #cbcbcb 1px;
+	border-bottom: solid #cbcbcb 1px;
+	border-left: solid #cbcbcb 1px;
+	border-right: none;
+	border-radius: 4px 0 0 4px;
+	box-shadow: 0 1px 0 0 #bcbcbc;
+	font-family: 'Quicksand', sans-serif;
+	font-size: 16px;
+}
+
+
+button {
+    -webkit-appearance: none;
+	display: flex;
+	margin: 0;
+	padding: 10px 5px;
+	justify-content: center;
+	background-color: rgb(4, 158, 81);
+	border: solid #008141 1px;
+	border-radius: 0 4px 4px 0;
+	box-shadow: 0 1px 0 0 rgb(0, 97, 44);
+	font-size: 16px;
+	color: #fff;
+	cursor: pointer;
+	width: 40px;
+}
+
+button i {
+	text-align: center;
+	margin: 0 10px 0 0;
+}
+
+button i {
+	display: flex;
+	align-self: center;
+	text-align: center;
+	margin: 0;
+}
+
+button:hover {
+	background-color: #008150;
+}
+
+input:focus, button:focus {
+	outline: none;
+}
+
+.code {
+    display: flex;
+    justify-content: center;
+}
+
+.code canvas {
+    margin: 15px;
+}

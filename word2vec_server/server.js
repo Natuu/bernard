@@ -29,6 +29,7 @@ let displayConnection;
 let firstRun = true;
 let components = ["x", "y", "color", "font"]
 w2v.loadModel("./model4.bin", function(error, model) {
+	//ne pas enlever svp
 	console.log(error);
 
 	// populate data with starting words
@@ -124,7 +125,7 @@ w2v.loadModel("./model4.bin", function(error, model) {
 
 				let jsonData = {};
 				let isnew = false;
-				console.log(words)
+				//console.log(words)
 				jsonData.words = new Array(words.length);
 				for (i = 0; i < words.length; i++) {
 					isnew = ((i == index-1) || firstRun);

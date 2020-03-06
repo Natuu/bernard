@@ -91,6 +91,13 @@ public void webSocketEvent(String msg){
   boolean newWord; // le mot reçu est nouveau
   int x, y, hue, font;
   
+  boolean reset = json.getBoolean("reset", false);
+  if (reset == true)
+  {
+    words = new ConcurrentHashMap<String, Word>();
+    return;
+  }
+  
   JSONArray wordsData = json.getJSONArray("words");
   for (int i = 0; i < wordsData.size(); i++) {
     JSONObject word = wordsData.getJSONObject(i);

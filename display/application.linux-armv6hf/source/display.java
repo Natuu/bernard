@@ -36,7 +36,7 @@ int text_size;
 
 
 public void setup() {
-  if (args == null || args.length != 4)
+  if (args == null || args.length != 2)
   {
     System.out.println("usage: ./display <host> <text_size>");
     exit();
@@ -45,8 +45,7 @@ public void setup() {
   
   surface.setResizable(true);
   
-  text_size = Integer.parseInt(args[3]);
-  size(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+  text_size = Integer.parseInt(args[1]);
   colorMode(HSB, 360, 100, 100);
     
   font_regular = createFont("Quicksand-Regular.ttf", 32);
@@ -56,9 +55,9 @@ public void setup() {
 
   frameRate(60);
   
-  print("Host is "+ args[0]);  
+  System.out.println("Host is "+ args[0]);  
   cl = new WebsocketClient(this, "ws://" + args[0]);
-  print("Connected.");
+  System.out.println("Connected.");
   words = new ConcurrentHashMap<String, Word>();
   
   //flood_words();

@@ -19,15 +19,16 @@ class Word {
   
   
  
-  Word(String s, int x, int y, int hue, int fontNumber) {
+  Word(String s, int x, int y, int hue, int fontNumber, int size) {
     //println(s + " " + x + " " + y);
+    NORMAL_SIZE = size;
     donex = false;
     doney = false;
     word = s;
     targetx = x;
     targety = y;
-    posx = width/2;
-    posy = height/2;
+    posx = displayWidth/2;
+    posy = displayHeight/2;
     size = SPAWN_SIZE;
     targetHue = hue;
     this.fontNumber = fontNumber;
@@ -86,7 +87,7 @@ class Word {
     else if (fontNumber == 2)
       textFont(font_bold);
     textAlign(CENTER);
-    textSize(size);
+    textSize(NORMAL_SIZE);
     text(word, posx, posy);
     counter = (counter+1) % 60;
 

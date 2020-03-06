@@ -12,10 +12,22 @@ PFont font_regular;
 PFont font_light;
 PFont font_bold;
 
+int text_size;
+
 
 
 void setup() {
-  size(1500, 1000);
+  if (args == null || args.length != 4)
+  {
+    System.out.println("usage: ./display <host> <text_size>");
+    exit();
+  }
+  
+  fullScreen();
+  surface.setResizable(true);
+  
+  text_size = Integer.parseInt(args[3]);
+  size(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
   colorMode(HSB, 360, 100, 100);
     
   font_regular = createFont("Quicksand-Regular.ttf", 32);
@@ -64,13 +76,13 @@ void webSocketEvent(String msg){
   JSONArray wordsData = json.getJSONArray("words");
   for (int i = 0; i < wordsData.size(); i++) {
     JSONObject word = wordsData.getJSONObject(i);
-    x = (int)(word.getFloat("x") * (1500-(marginx*2)) + marginx);
-    y = (int)(word.getFloat("y") * (1000-(marginy*2)) + marginy);
+    x = (int)(word.getFloat("x") * (displayWidth-(marginx*2)) + marginx);
+    y = (int)(word.getFloat("y") * (displayHeight-(marginy*2)) + marginy);
     hue = (int)((float)(word.getFloat("color")) * 200);
     font = (int)((float)(word.getFloat("color")) * 3);
     
     if (word.getBoolean("new")) { 
-      words.put(word.getString("value"), new Word(word.getString("value"), x, y, hue, font));
+      words.put(word.getString("value"), new Word(word.getString("value"), x, y, hue, font, text_size));
     } else {
       words.get(word.getString("value")).setTarget(x, y, hue, font);
     }  

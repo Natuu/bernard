@@ -18,20 +18,20 @@ var wsServer = new WebSocket.Server({
 
 const word2vecConnection = new WebSocket('ws://127.0.0.1:1337/');
 
-let link = "test";
+let link = "link";
 
-router.get('/:link', function(req,res){
-	if (req.params.link.trim() === link.trim()) {
-		res.sendFile(path.join(__dirname+'/views/index.html'));
-	} else if (req.params.link === "qrcode") {
-		res.sendFile(path.join(__dirname+'/views/qrcode.html'));
-	} else {
-		res.sendFile(path.join(__dirname+'/views/error.html'));
-	}	
-});
+// router.get('/:link', function(req,res){
+// 	if (req.params.link.trim() === link.trim()) {
+// 		res.sendFile(path.join(__dirname+'/views/index.html'));
+// 	} else if (req.params.link === "qrcode") {
+// 		res.sendFile(path.join(__dirname+'/views/qrcode.html'));
+// 	} else {
+// 		res.sendFile(path.join(__dirname+'/views/error.html'));
+// 	}	
+// });
 
 router.get('/', function(req,res){
-	res.sendFile(path.join(__dirname+'/views/error.html'));	
+	res.sendFile(path.join(__dirname+'/views/index.html'));	
 });
 
 app.use(express.static('public'));
@@ -40,7 +40,7 @@ app.use(express.static('public'));
 app.use('/', router);
 
 //start our server
-server.listen(process.env.PORT || 8080, () => {
+server.listen(process.env.PORT || 80, () => {
 	console.log(`Server started on port ${server.address().port}`);
 });
 
@@ -48,10 +48,10 @@ server.listen(process.env.PORT || 8080, () => {
 
 // On genere un nouveau lien toutes les 10 minutes
 let qrClients = [];
-changelink();
-setInterval(() => {
-	changelink();
-}, 600000);
+// changelink();
+// setInterval(() => {
+// 	changelink();
+// }, 600000);
 
 
 let clients = [];

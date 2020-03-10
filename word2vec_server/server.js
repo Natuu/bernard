@@ -32,10 +32,10 @@ let components = ["x", "y", "color", "font"]
 
 
 let firstRunData = {words: [
-	{value: "bienvenue", new: true, x: 0.3, y: 0.5, color: 0.5, font: 1},
-	{value: "dans", new: true, x: 0.4, y: 0.5, color: 0.5, font: 1},
-	{value: "notre", new: true, x: 0.6, y: 0.5, color: 0.5, font: 1},
-	{value: "expérience", new: true, x: 0.7, y: 0.5, color: 0.5, font: 1}
+	{value: "bienvenue", new: true, x: 0.35, y: 0.5, color: 0.5, font: 1},
+	{value: "dans", new: true, x: 0.45, y: 0.5, color: 0.5, font: 1},
+	{value: "notre", new: true, x: 0.55, y: 0.5, color: 0.5, font: 1},
+	{value: "expérience", new: true, x: 0.65, y: 0.5, color: 0.5, font: 1}
 
 ]};
 w2v.loadModel("./model4.bin", function(error, model) {

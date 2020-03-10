@@ -60,4 +60,12 @@ $(function () {
 			alert('Caractère non reconnu');
 		}
 	});
+
+	$('#trash').click(function () {
+		let mot = {};
+		mot.type = "mot";
+		mot.mot = "[[[reset]]]";
+		mot.location = window.location.pathname;
+		connection.send(JSON.stringify(mot));
+	});
 });

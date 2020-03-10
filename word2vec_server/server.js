@@ -79,7 +79,7 @@ w2v.loadModel("./model4.bin", function(error, model) {
 						let i = wordsVec.push(Array.prototype.slice.call(model.getVector(mot).values));
 						//console.log(wordsVec);
 						words[i-1] = mot;
-						
+						firstRun = true;
 					});
 					return;
 				}

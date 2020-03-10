@@ -26,8 +26,18 @@ let wordsVec = [];
 
 let displayConnected = false;
 let displayConnection;
-let firstRun = true;
+let firstRun = false;
 let components = ["x", "y", "color", "font"]
+
+
+
+let firstRunData = {words: [
+	{value: "bienvenue", new: true, x: 0.3, y: 0.5, color: 0.5, font: 1},
+	{value: "dans", new: true, x: 0.4, y: 0.5, color: 0.5, font: 1},
+	{value: "notre", new: true, x: 0.6, y: 0.5, color: 0.5, font: 1},
+	{value: "expérience", new: true, x: 0.7, y: 0.5, color: 0.5, font: 1}
+
+]};
 w2v.loadModel("./model4.bin", function(error, model) {
 	//ne pas enlever svp
 	console.log(error);
@@ -48,6 +58,7 @@ w2v.loadModel("./model4.bin", function(error, model) {
 
 		displayConnected = true;
 		displayConnection = ws;
+		displayConnection.send(JSON.stringify(firstRunData));
 		ws.on('close', function() {
 			console.log((new Date()) + " display client disconnected.");
 			displayConnected = false;
@@ -79,8 +90,9 @@ w2v.loadModel("./model4.bin", function(error, model) {
 						let i = wordsVec.push(Array.prototype.slice.call(model.getVector(mot).values));
 						//console.log(wordsVec);
 						words[i-1] = mot;
-						firstRun = true;
+						
 					});
+					displayConnection.send(JSON.stringify(firstRunData));
 					return;
 				}
 				if (model.getVector(message) === null)
@@ -128,7 +140,8 @@ w2v.loadModel("./model4.bin", function(error, model) {
 				//console.log(words)
 				jsonData.words = new Array(words.length);
 				for (i = 0; i < words.length; i++) {
-					isnew = ((i == index-1) || firstRun);
+					isnew = (i == index-1);
+					console.log(words[i] + " is new: " + isnew);
 					jsonData.words[i] = {"value": words[i], "new": isnew};
 					for (j = 0; j < components.length; j++) {
 						jsonData.words[i][components[j]] = resScaled[i][j].toFixed(2);
